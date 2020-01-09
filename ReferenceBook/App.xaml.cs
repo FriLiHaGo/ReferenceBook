@@ -1,17 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 
 namespace ReferenceBook
 {
-    /// <summary>
-    /// Логика взаимодействия для App.xaml
-    /// </summary>
     public partial class App : Application
     {
+        private void Application_Startup(object sender, StartupEventArgs e)
+        {
+            var window = new MainWindow();
+            var vm = new MainWindowVM();
+            window.DataContext = vm;
+
+            Current.MainWindow = window;
+            Current.MainWindow.Show();
+        }
     }
 }

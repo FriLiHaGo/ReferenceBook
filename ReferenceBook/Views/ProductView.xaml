@@ -7,7 +7,6 @@
         mc:Ignorable="d"
         Height="350" Width="300" 
         MinHeight="400" MinWidth="300"
-        
         FontSize="12">
     <Window.Resources>
         <Style TargetType="{x:Type Label}">
@@ -28,20 +27,31 @@
     <DockPanel>
         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" FlowDirection="RightToLeft">
             <Button IsCancel="True">Cancel</Button>
-            <Button IsDefault="True" Click="Button_Click">OK</Button>
+            <Button Command="{Binding AcceptCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}">OK</Button>
         </StackPanel>
         
         <StackPanel>
-            <Label Content="Артикул 1" Target="{Binding ElementName=VendorCode}"/>
-            <TextBox Name="VendorCode"/>
-            <Label Content="Производитель 1" Target="{Binding ElementName=Brand}"/>
-            <TextBox Name="Brand"/>
-            <Label Content="Артикул 2" Target="{Binding ElementName=AnalogueVendorCode}"/>
-            <TextBox Name="AnalogueVendorCode"/>
-            <Label Content="Производитель 2" Target="{Binding ElementName=AnalogueBrand}"/>
-            <TextBox Name="AnalogueBrand"/>
-            <Label Content="Доверие" Target="{Binding ElementName=Trust}"/>
-            <TextBox Name="Trust"/>
+            <Label Content="Артикул 1" 
+                   Target="{Binding ElementName=tbVendorCode}"/>
+            <TextBox Name="tbVendorCode" 
+                     Text="{Binding SelectedProduct.VendorCode, Mode=TwoWay}"/>
+            <Label Content="Производитель 1" 
+                   Target="{Binding ElementName=tbBrand}"/>
+            <TextBox Name="tbBrand" 
+                     Text="{Binding SelectedProduct.Brand, Mode=TwoWay}"/>
+            <Label Content="Артикул 2" 
+                   Target="{Binding ElementName=tbAnalogueVendorCode}"/>
+            <TextBox Name="tbAnalogueVendorCode" 
+                     Text="{Binding SelectedProduct.AnalogueVendorCode, Mode=TwoWay}"/>
+            <Label Content="Производитель 2" 
+                   Target="{Binding ElementName=tbAnalogueBrand}"/>
+            <TextBox Name="tbAnalogueBrand" 
+                     Text="{Binding SelectedProduct.AnalogueBrand, Mode=TwoWay}"/>
+            <Label Content="Доверие" 
+                   Target="{Binding ElementName=tbTrust}"/>
+            <TextBox Name="tbTrust" 
+                     Text="{Binding SelectedProduct.Trust, Mode=TwoWay}"/>
         </StackPanel>
     </DockPanel>
 </Window>

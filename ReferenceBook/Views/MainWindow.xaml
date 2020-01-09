@@ -5,8 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ReferenceBook"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800"
-        
+        Title="Справочник аналогов" 
+        Height="400" Width="550" 
+        MinHeight="100" MinWidth="550" 
         FontSize="12">
     <Window.Resources>
         <Style TargetType="{x:Type Button}">
@@ -24,32 +25,39 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="auto"/>
         </Grid.ColumnDefinitions>
+
         <DataGrid
-            Name="dataGrid"
-            Grid.Row="0" Grid.Column="0"
-            ItemsSource="{Binding Products}">
-            
+                Grid.Row="0" Grid.Column="0"
+                AutoGenerateColumns="False"
+                IsReadOnly="True"
+                ItemsSource="{Binding Products}"
+                SelectedItem="{Binding SelectedProduct, Mode=TwoWay}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Артикул 1" Binding="{Binding VendorCode}"/>
+                <DataGridTextColumn Header="Производитель 1" Binding="{Binding Brand}"/>
+                <DataGridTextColumn Header="Артикул 2" Binding="{Binding AnalogueVendorCode}"/>
+                <DataGridTextColumn Header="Производитель 2" Binding="{Binding AnalogueBrand}"/>
+                <DataGridTextColumn Header="Доверие" Binding="{Binding Trust}"/>
+            </DataGrid.Columns>
         </DataGrid>
 
         <DockPanel
             Grid.Row="1" Grid.Column="0">
             <StackPanel Orientation="Horizontal"
                         DockPanel.Dock="Left">
-                <Button Name="BtnAdd" Content="Добавить"
-                    Click="BtnAdd_Click"/>
-                <Button Name="BtnEdit" Content="Редактировать"
-                    Click="BtnEdit_Click"/>
-                <Button Name="BtnDelete" Content="Удалить"
-                    Click="BtnDelete_Click"/>
+                <Button Content="Добавить"
+                        Command="{Binding AddCommand}"/>
+                <Button Content="Редактировать"
+                        Command="{Binding EditСommand}"/>
+                <Button Content="Удалить"
+                        Command="{Binding RemoveCommand}"/>
             </StackPanel>
 
             <Button
                 DockPanel.Dock="Right"
                 HorizontalAlignment="Right"
-                Name="BtnFindRelation" Content="Найти связь"
-                Click="BtnFindRelation_Click"/>
+                Content="Найти связь"
+                Command="{Binding FindRelationCommand}"/>
         </DockPanel>
-        
-        
     </Grid>
 </Window>

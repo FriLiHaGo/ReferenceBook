@@ -1,113 +1,134 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Input;
 
 namespace ReferenceBook
 {
-    internal class MainWindowVM
+    internal class MainWindowVM : NotifyPropertyChange
     {
         private ReferenceBookContext db;
 
+        /// <summary>
+        /// Ctor
+        /// </summary>
         public MainWindowVM()
         {
+            AddCommand = new Command(Add);
+            EditСommand = new Command(Edit, o => SelectedProduct != null);
+            RemoveCommand = new Command(Remove, o => SelectedProduct != null);
+            FindRelationCommand = new Command(FindRelation);
+            AcceptCommand = new Command(Accept);
+
             db = new ReferenceBookContext();
 
             db.Products.Load();
             Products = db.Products.Local;
         }
 
+        /// <summary>
+        /// Справочник аналогов
+        /// </summary>
         public IEnumerable<Product> Products { get; set; }
+
+        private Product selectedProduct;
+        /// <summary>
+        /// Выбранный элемент
+        /// </summary>
+        public Product SelectedProduct
+        {
+            get => selectedProduct;
+            set
+            {
+                selectedProduct = value;
+                OnPropertyChanged();
+            }
+        }
 
         #region Commands
 
-        public RoutedCommand AddItem { get; private set; } = new RoutedCommand();
-        public RoutedCommand EditItem { get; private set; } = new RoutedCommand();
-        public RoutedCommand RemoveItem { get; private set; } = new RoutedCommand();
-        public RoutedCommand FindRelation { get; private set; } = new RoutedCommand();
+        public Command AddCommand { get; private set; }
+        public Command EditСommand { get; private set; }
+        public Command RemoveCommand { get; private set; }
+        public Command FindRelationCommand { get; private set; }
+        public Command AcceptCommand { get; private set; }
 
         #endregion
 
-        public void Add(object parameter, IInputElement target)
+        #region Private
+
+        private void Add(object parameter)
         {
-            var dialog = new DialogService<Product, ProductView>("Добавление элемента", typeof(ProductVM));
+            var dialog = new ProductView();
+            dialog.Title = "Добавить элемент";
+            dialog.DataContext = this;
+
+            SelectedProduct = new Product();
 
             dialog.ShowDialog();
-            if (!dialog.DialogResult)
+            if (!dialog.DialogResult.Value)
             {
                 return;
             }
 
-            var product = dialog.Product;
-
+            var product = SelectedProduct;
             db.Products.Add(product);
             db.SaveChanges();
+
+            SelectedProduct = null;
         }
 
-        //public void Edit(object parameter, IInputElement target)
-        //{
-        //    var product = db.Products.Find(id);
-
-        //    var dialog = new ProductView();
-        //    dialog.Title = "Редактирование элемента";
-
-        //    dialog.VendorCode.Text = product.VendorCode;
-        //    dialog.Brand.Text = product.Brand;
-        //    dialog.AnalogueVendorCode.Text = product.AnalogueVendorCode;
-        //    dialog.AnalogueBrand.Text = product.AnalogueBrand;
-        //    dialog.Trust.Text = product.Trust.ToString();
-
-
-        //    if (!dialog.ShowDialog().Value)
-        //    {
-        //        return;
-        //    }
-
-        //    product.VendorCode = dialog.VendorCode.Text;
-        //    product.Brand = dialog.Brand.Text;
-        //    product.AnalogueVendorCode = dialog.AnalogueVendorCode.Text;
-        //    product.AnalogueBrand = dialog.AnalogueBrand.Text;
-        //    product.Trust = Convert.ToInt32(dialog.Trust.Text);
-
-        //    db.SaveChanges();
-        //}
-
-        //public void Remove(object parameter, IInputElement target)
-        //{
-        //    var product = db.Products.Find(id);
-        //    db.Products.Remove(product);
-        //    db.SaveChanges();
-        //}
-    }
-
-    public class DialogService<TResult, TForm> 
-        where TForm : Window
-    {
-        public DialogService(string title, Type vm)
+        private void Edit(object parameter)
         {
-            Title = title;
-            VM = vm;
+            if (SelectedProduct == null)
+            {
+                return;
+            }
+
+            var dialog = new ProductView();
+            dialog.Title = "Редактировать элемент";
+            dialog.DataContext = this;
+
+            dialog.ShowDialog();
+            if (!dialog.DialogResult.Value)
+            {
+                return;
+            }
+
+            var product = SelectedProduct;
+            db.Entry(product).State = EntityState.Modified;
+            db.SaveChanges();
+
+            SelectedProduct = null;
         }
 
-        public string Title { get; set; }
-
-        public Type VM { get; set; }
-
-        public bool DialogResult { get; private set; }
-
-        public TResult Product { get; set; }
-
-        public void ShowDialog()
+        private void Remove(object parameter)
         {
-            var dialog = Activator.CreateInstance<TForm>();
-            dialog.Title = Title;
-            dialog.DataContext = Activator.CreateInstance(VM, new object[] { Product });
-            
-            DialogResult = dialog.ShowDialog().Value;
+            if (SelectedProduct == null)
+            {
+                return;
+            }
+            var product = db.Products.Find(SelectedProduct.Id);
+            db.Products.Remove(product);
+            db.SaveChanges();
+
+            SelectedProduct = null;
         }
+
+        private void Accept(object parameter)
+        {
+            var window = parameter as Window;
+            window.DialogResult = true;
+            window.Close();
+        }
+
+        private void FindRelation(object parameter)
+        {
+            var view = new FindRelationView();
+            var vm = new FindRelationVM();
+            view.DataContext = vm;
+            view.Show();
+        }
+
+        #endregion
     }
 }

@@ -55,9 +55,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Command.cs" />
+    <Compile Include="IRouteSearch.cs" />
+    <Compile Include="ReferenceBookContext.cs" />
+    <Compile Include="ProductNode.cs" />
+    <Compile Include="ProductRouteSearch.cs" />
     <Compile Include="ViewModels\FindRelationVM.cs" />
     <Compile Include="ViewModels\MainWindowVM.cs" />
-    <Compile Include="ViewModels\ProductVM.cs" />
     <Compile Include="ViewModels\RelationVM.cs" />
     <Compile Include="Views\RelationView.xaml.cs">
       <DependentUpon>RelationView.xaml</DependentUpon>
@@ -74,7 +78,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Code.cs" />
+    <Compile Include="RouteSearch.cs" />
     <Compile Include="Views\FindRelationView.xaml.cs">
       <DependentUpon>FindRelationView.xaml</DependentUpon>
     </Compile>
@@ -94,7 +98,6 @@
   <ItemGroup>
     <Compile Include="NotifyPropertyChange.cs" />
     <Compile Include="Models\Product.cs" />
-    <Compile Include="Models\ProductNode.cs" />
     <Compile Include="Views\ProductView.xaml.cs">
       <DependentUpon>ProductView.xaml</DependentUpon>
     </Compile>

@@ -5,8 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ReferenceBook"
         mc:Ignorable="d"
-        Title="FindRelationView" Height="300" Width="500"
-        
+        Title="Найти маршрут" 
+        Height="300" Width="500"
+        MinHeight="300" MinWidth="500"
         FontSize="12">
     <Window.Resources>
         <Style TargetType="{x:Type Label}">
@@ -36,10 +37,12 @@
             Grid.Row="0" Grid.Column="0"
             Header="Исходный товар">
             <StackPanel>
-                <Label Content="Артикул" Target="{Binding ElementName=VendorCode}"/>
-                <TextBox Name="VendorCode"/>
-                <Label Content="Производитель" Target="{Binding ElementName=Brand}"/>
-                <TextBox Name="Brand"/>
+                <Label Content="Артикул" Target="{Binding ElementName=tbVendorCode}"/>
+                <TextBox Name="tbVendorCode"
+                         Text="{Binding VendorCode, Mode=OneWayToSource}"/>
+                <Label Content="Производитель" Target="{Binding ElementName=tbBrand}"/>
+                <TextBox Name="tbBrand"
+                         Text="{Binding Brand, Mode=OneWayToSource}"/>
             </StackPanel>
         </GroupBox>
         
@@ -47,18 +50,39 @@
             Grid.Row="0" Grid.Column="1"
             Header="Искомый товар">
             <StackPanel>
-                <Label Content="Артикул" Target="{Binding ElementName=AnalogueVendorCode}"/>
-                <TextBox Name="AnalogueVendorCode"/>
-                <Label Content="Производитель" Target="{Binding ElementName=AnalogueBrand}"/>
-                <TextBox Name="AnalogueBrand"/>
+                <Label Content="Артикул" Target="{Binding ElementName=tbAnalogueVendorCode}"/>
+                <TextBox Name="tbAnalogueVendorCode"
+                         Text="{Binding AnalogueVendorCode, Mode=OneWayToSource}"/>
+                <Label Content="Производитель" Target="{Binding ElementName=tbAnalogueBrand}"/>
+                <TextBox Name="tbAnalogueBrand"
+                         Text="{Binding AnalogueBrand, Mode=OneWayToSource}"/>
             </StackPanel>
         </GroupBox>
 
         <DockPanel
             Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+            
+            <Button 
+                DockPanel.Dock="Right"
+                Content="Найти" HorizontalAlignment="Right"
+                Command="{Binding FindRelation}"
+                CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"/>
 
-            <Button Content="Найти" HorizontalAlignment="Right"
-                    Click="Button_Click"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Label 
+                    Grid.Row="0" Grid.Column="0"
+                    Margin="3" Padding="3"
+                    Content="Глубина поиска" Target="{Binding ElementName=tbDeep}"/>
+                <TextBox 
+                    Grid.Row="0" Grid.Column="1"
+                    Margin="3" Padding="3"
+                    Name="tbDeep" Text="{Binding Deep, Mode=TwoWay}"/>
+            </Grid>
+
         </DockPanel>
     </Grid>
 </Window>

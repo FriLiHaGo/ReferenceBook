@@ -1,17 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ReferenceBook
+﻿namespace ReferenceBook
 {
+    /// <summary>
+    /// Товар из справочника
+    /// </summary>
     public class Product : NotifyPropertyChange
     {
         public int Id { get; set; }
 
         private string vendorCode;
+        /// <summary>
+        /// Артикул 1
+        /// </summary>
         public string VendorCode
         {
             get => vendorCode;
@@ -23,6 +22,9 @@ namespace ReferenceBook
         }
 
         private string brand;
+        /// <summary>
+        /// Производитель 1
+        /// </summary>
         public string Brand
         {
             get => brand;
@@ -34,6 +36,9 @@ namespace ReferenceBook
         }
 
         private string analogueVendorCode;
+        /// <summary>
+        /// Артикул 2
+        /// </summary>
         public string AnalogueVendorCode
         {
             get => analogueVendorCode;
@@ -45,6 +50,9 @@ namespace ReferenceBook
         }
 
         private string analogueBrand;
+        /// <summary>
+        /// Производитель 2
+        /// </summary>
         public string AnalogueBrand
         {
             get => analogueBrand;
@@ -56,6 +64,9 @@ namespace ReferenceBook
         }
 
         private int trust;
+        /// <summary>
+        /// Доверие
+        /// </summary>
         public int Trust
         {
             get => trust;
@@ -65,14 +76,5 @@ namespace ReferenceBook
                 OnPropertyChanged();
             }
         }
-    }
-
-    public class ReferenceBookContext : DbContext
-    {
-        public ReferenceBookContext() :
-            base("DataBase")
-        { }
-
-        public DbSet<Product> Products { get; set; }
     }
 }
