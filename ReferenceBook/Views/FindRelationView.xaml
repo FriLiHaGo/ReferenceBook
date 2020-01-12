@@ -3,21 +3,12 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ReferenceBook"
         mc:Ignorable="d"
         Title="Найти маршрут" 
         Height="300" Width="500"
         MinHeight="300" MinWidth="500"
         FontSize="12">
     <Window.Resources>
-        <Style TargetType="{x:Type Label}">
-            <Setter Property="Margin" Value="3,3,3,0"/>
-            <Setter Property="Padding" Value="3,3,3,3"/>
-        </Style>
-        <Style TargetType="{x:Type TextBox}">
-            <Setter Property="Margin" Value="3,0,3,3"/>
-            <Setter Property="Padding" Value="3"/>
-        </Style>
         <Style TargetType="{x:Type Button}">
             <Setter Property="Margin" Value="3"/>
             <Setter Property="Padding" Value="3"/>
@@ -37,34 +28,43 @@
             Grid.Row="0" Grid.Column="0"
             Header="Исходный товар">
             <StackPanel>
-                <Label Content="Артикул" Target="{Binding ElementName=tbVendorCode}"/>
-                <TextBox Name="tbVendorCode"
-                         Text="{Binding VendorCode, Mode=OneWayToSource}"/>
-                <Label Content="Производитель" Target="{Binding ElementName=tbBrand}"/>
-                <TextBox Name="tbBrand"
-                         Text="{Binding Brand, Mode=OneWayToSource}"/>
+                <ComboBox Margin="3" Padding="3"
+                          IsEditable="True"
+                          ItemsSource="{Binding Original}"
+                          SelectedItem="{Binding OriginalNode, Mode=OneWayToSource}">
+                    <ComboBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <VirtualizingStackPanel></VirtualizingStackPanel>
+                        </ItemsPanelTemplate>
+                    </ComboBox.ItemsPanel>
+                </ComboBox>
             </StackPanel>
         </GroupBox>
-        
+
         <GroupBox 
             Grid.Row="0" Grid.Column="1"
             Header="Искомый товар">
             <StackPanel>
-                <Label Content="Артикул" Target="{Binding ElementName=tbAnalogueVendorCode}"/>
-                <TextBox Name="tbAnalogueVendorCode"
-                         Text="{Binding AnalogueVendorCode, Mode=OneWayToSource}"/>
-                <Label Content="Производитель" Target="{Binding ElementName=tbAnalogueBrand}"/>
-                <TextBox Name="tbAnalogueBrand"
-                         Text="{Binding AnalogueBrand, Mode=OneWayToSource}"/>
+                <ComboBox Margin="2" Padding="3"
+                          IsEditable="True"
+                          ItemsSource="{Binding Desired}"
+                          SelectedItem="{Binding DesiredNode, Mode=OneWayToSource}">
+                    <ComboBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <VirtualizingStackPanel></VirtualizingStackPanel>
+                        </ItemsPanelTemplate>
+                    </ComboBox.ItemsPanel>
+                </ComboBox>
             </StackPanel>
         </GroupBox>
 
         <DockPanel
             Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
-            
+
             <Button 
                 DockPanel.Dock="Right"
-                Content="Найти" HorizontalAlignment="Right"
+                HorizontalAlignment="Right"
+                Content="Найти" 
                 Command="{Binding FindRelation}"
                 CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Window}}"/>
 
@@ -76,11 +76,13 @@
                 <Label 
                     Grid.Row="0" Grid.Column="0"
                     Margin="3" Padding="3"
-                    Content="Глубина поиска" Target="{Binding ElementName=tbDeep}"/>
+                    Content="Глубина поиска" 
+                    Target="{Binding ElementName=tbDeep}"/>
                 <TextBox 
                     Grid.Row="0" Grid.Column="1"
                     Margin="3" Padding="3"
-                    Name="tbDeep" Text="{Binding Deep, Mode=TwoWay}"/>
+                    Name="tbDeep" 
+                    Text="{Binding Deep, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </Grid>
 
         </DockPanel>

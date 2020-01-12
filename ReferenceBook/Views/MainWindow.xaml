@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ReferenceBook"
         mc:Ignorable="d"
         Title="Справочник аналогов" 
         Height="400" Width="550" 
@@ -16,6 +15,7 @@
             <Setter Property="MinWidth" Value="70"/>
         </Style>
     </Window.Resources>
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -23,7 +23,6 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="auto"/>
         </Grid.ColumnDefinitions>
 
         <DataGrid
@@ -43,8 +42,8 @@
 
         <DockPanel
             Grid.Row="1" Grid.Column="0">
-            <StackPanel Orientation="Horizontal"
-                        DockPanel.Dock="Left">
+            <StackPanel DockPanel.Dock="Left"
+                        Orientation="Horizontal">
                 <Button Content="Добавить"
                         Command="{Binding AddCommand}"/>
                 <Button Content="Редактировать"

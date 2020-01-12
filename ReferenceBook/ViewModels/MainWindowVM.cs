@@ -6,7 +6,7 @@ namespace ReferenceBook
 {
     internal class MainWindowVM : NotifyPropertyChange
     {
-        private ReferenceBookContext db;
+        private readonly ReferenceBookContext db;
 
         /// <summary>
         /// Ctor
